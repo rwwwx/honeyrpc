@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package tokenchecker;
+option go_package = "./pkg/token_checker";
+
+
+service TokenChecker {
+  rpc CheckTokenSafety(TokenSafetyRequest) returns (TokenSafetyResponse);
+}
+
+message TokenSafetyRequest {
+  string tokenMint = 1;
+}
+
+message TokenSafetyResponse {
+  bool isNonStandardProgram = 1;
+  bool hasMintAuthority = 2;
+  bool hasFreezeAuthority = 3;
+  string reason = 4;
+}
