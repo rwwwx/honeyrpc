@@ -6,3 +6,6 @@ proto:
 
 test_all:
 	go test ./...
+
+format:
+	gofmt -s -w .

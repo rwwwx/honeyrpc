@@ -6,6 +6,7 @@ import (
 )
 
 type TokenSafetyResult struct {
+	ProgramName          string
 	IsNonStandardProgram bool
 	HasMintAuthority     bool
 	HasFreezeAuthority   bool

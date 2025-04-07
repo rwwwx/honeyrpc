@@ -22,7 +22,7 @@ RUN go mod download
 COPY . .
 
 # Generate protobuf files
-RUN protoc --go_out=. --go-grpc_out=. proto/*.proto
+RUN make proto
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /honeyrpc/cmd/server ./cmd/server

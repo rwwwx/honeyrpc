@@ -9,8 +9,6 @@ import (
 type AppConfig struct {
 	NetworkType      string `json:"network_type"`
 	Port             string `json:"port"`
-	Host             string `json:"host"`
-	LogLevel         string `json:"log_level"`
 	SolanaRpcNodeUrl string `json:"solana_rpc_node_url"`
 }
 

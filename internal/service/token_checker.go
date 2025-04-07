@@ -40,11 +40,11 @@ var acceptedPrograms = map[string]string{
 }
 
 const (
-	unknownProgramIdErr = "Token uses unknown program ID"
+	unknownProgramIdErr = "Token uses unknown program ID: "
 	freezeAuthorityErr  = "Freeze authority still active"
 	mintAuthorityErr    = "Mint authority still active"
 	reasonSeparator     = "; "
-	tokenIsSafe         = "Token looks safe"
+	tokenIsSafe         = "Token looks safe and using: "
 )
 
 type tokenSafetyResultOption func(*entity.TokenSafetyResult)
@@ -57,7 +57,7 @@ func createTokenSafetyResult(opts ...tokenSafetyResultOption) *entity.TokenSafet
 	}
 
 	if len(res.Reason) == 0 {
-		res.Reason = tokenIsSafe
+		res.Reason = tokenIsSafe + res.ProgramName
 	}
 
 	res.Reason = strings.TrimSpace(res.Reason)
@@ -71,9 +71,13 @@ func foldReasons(newReason, previousReasons string) string {
 
 func isStandardProgramUsed(info *entity.MintAccountInfo) tokenSafetyResultOption {
 	return func(result *entity.TokenSafetyResult) {
-		result.IsNonStandardProgram = acceptedPrograms[info.OwnerProgram.String()] == ""
+		tokenProgramAddress := info.OwnerProgram.String()
+		tokenProgramName := acceptedPrograms[tokenProgramAddress]
+		result.IsNonStandardProgram = tokenProgramName == ""
 		if result.IsNonStandardProgram {
-			result.Reason = foldReasons(unknownProgramIdErr, result.Reason)
+			result.Reason = foldReasons(unknownProgramIdErr+tokenProgramAddress, result.Reason)
+		} else {
+			result.ProgramName = tokenProgramName
 		}
 	}
 }

@@ -21,6 +21,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	log.Println("Using '" + appConfig.SolanaRpcNodeUrl + "' RPC Node")
 	solanaClient := solana.NewClient(appConfig.SolanaRpcNodeUrl)
 	tokenCheckerService := service.NewTokenCheckerService(solanaClient)
 
